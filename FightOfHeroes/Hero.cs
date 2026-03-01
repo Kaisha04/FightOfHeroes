@@ -1,0 +1,115 @@
+﻿namespace FightOfHeroes;
+
+public abstract class Hero
+{
+    
+    //Name of player
+    public string? Name {get; private set;}
+    
+    //Player health
+    private protected int MaxHealth {get; set;}
+    public int Health {get; private protected set;}
+    
+    //Player armor
+    public int Armor {get; set;}
+
+    //Player stamina
+    private protected int MaxStamina {get; set;}
+    public int Stamina  {get; private protected set;}
+    
+    
+    public Hero()
+    {}
+
+     public Hero(string name, int maxHealth, int armor, int maxStamina)
+    {
+        Name = name;
+        
+        MaxHealth = maxHealth;
+        Health = maxHealth;
+        
+        Armor = armor;
+        
+        MaxStamina = maxStamina;
+        Stamina = maxStamina;
+    }
+    // public Hero(string name, HeroStatsType hero)
+    // {
+    //     Name = name;
+    //     
+    //     MaxHealth = maxHealth;
+    //     Health = maxHealth;
+    //     
+    //     MaxArmor = maxArmor;
+    //     Armor = maxArmor;
+    //     
+    //     MaxStamina = maxStamina;
+    //     Stamina = maxStamina;
+    // }
+
+    //IsAliveCheck
+    public bool IsAlive() =>  Health > 0;
+
+    public void LostStamina(int lostStamina)
+    {
+        if (Stamina - lostStamina < 0) Stamina = 0;
+        else Stamina -= lostStamina;
+    }
+    
+    
+    public void ApplyDamage(int damage)
+    {
+        if (Health - damage < 0) Health = 0;
+        else Health -= damage;
+    }
+
+    public void LostArmor(int pointsOfArmor)
+    {
+        if (Armor - pointsOfArmor < 0) Armor = 0;
+        else Armor -= pointsOfArmor;
+    }
+    
+    //Show stats of player
+    public void ShowStats()
+    {
+        Console.WriteLine($"Name: {Name}");
+        Console.WriteLine($"Health: {Health}");
+        Console.WriteLine($"Armor: {Armor}");
+        Console.WriteLine($"Stamina: {Stamina}");
+    }
+    
+}
+
+public class Paladin : Hero
+{
+    public  Paladin(string name) : base(name, 100, 50, 50)
+    {}
+}
+
+public class Assasin : Hero
+{
+    public Assasin(string name) : base(name, 100, 50, 50)
+    {}
+}
+
+public class Mage : Hero, IHeal
+{
+    public void GetHeal(int heal)
+    {
+        if (Health + heal > MaxHealth) MaxHealth = Health;
+        else Health += heal;
+    }
+    public Mage(string name) : base(name, 100, 50, 50)
+    {}
+}
+
+public class Vampire : Hero, IHeal
+{
+    public void GetHeal(int heal)
+    {
+        if (Health + heal > MaxHealth) MaxHealth = Health;
+        else Health += heal;
+    }
+    public Vampire(string name) : base(name, 100, 50, 50)
+    {}
+}
