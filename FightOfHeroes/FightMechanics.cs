@@ -42,13 +42,16 @@ public class FightMechanics
         return damage;
     }
 
-    public int increaseStamina()
+    public int IncreaseStamina()
     {
-        ///Доробити механіку відновлення стаміни 
-        ///Потім почати проектувати вже сам концепт створення героїв і тд
-        ///
-        /// 
-        return 0;
+        if (Hero.Stamina >= Hero.MaxStamina) 
+        {
+            return 0;
+        }
+        int differenceInStamina = Hero.MaxStamina - Hero.Stamina;
+        int restoredStamina = random.Next(1, differenceInStamina + 1);
+        Hero.ApplyStamina(restoredStamina);
+        return restoredStamina;
     }
     
     public int Heal()

@@ -1,3 +1,4 @@
-﻿namespace FightOfHeroes;
+﻿using FightOfHeroes;
 
 
+InputHandler.ShowHerosTypes();

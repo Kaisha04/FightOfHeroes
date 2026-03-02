@@ -14,7 +14,7 @@ public abstract class Hero
     public int Armor {get; set;}
 
     //Player stamina
-    private protected int MaxStamina {get; set;}
+    public int MaxStamina {get; private set;}
     public int Stamina  {get; private protected set;}
     
     
@@ -54,6 +54,11 @@ public abstract class Hero
     {
         if (Stamina - lostStamina < 0) Stamina = 0;
         else Stamina -= lostStamina;
+    }
+    public void ApplyStamina(int lostStamina)
+    {
+        if (lostStamina + Stamina > MaxStamina) MaxStamina = Stamina;
+        else Stamina += lostStamina;
     }
     
     
@@ -112,4 +117,12 @@ public class Vampire : Hero, IHeal
     }
     public Vampire(string name) : base(name, 100, 50, 50)
     {}
+}
+
+public enum HeroType : byte
+{
+    Paladin = 1,
+    Assasin,
+    Mage,
+    Vampire
 }
