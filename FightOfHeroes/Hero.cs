@@ -17,11 +17,12 @@ public abstract class Hero
     public int MaxStamina {get; private set;}
     public int Stamina  {get; private protected set;}
     
+    public HeroType HeroType {get; private set;}
     
     public Hero()
     {}
 
-     public Hero(string name, int maxHealth, int armor, int maxStamina)
+     public Hero(string name, int maxHealth, int armor, int maxStamina, HeroType heroType)
     {
         Name = name;
         
@@ -32,21 +33,9 @@ public abstract class Hero
         
         MaxStamina = maxStamina;
         Stamina = maxStamina;
+        
+        HeroType = heroType;
     }
-    // public Hero(string name, HeroStatsType hero)
-    // {
-    //     Name = name;
-    //     
-    //     MaxHealth = maxHealth;
-    //     Health = maxHealth;
-    //     
-    //     MaxArmor = maxArmor;
-    //     Armor = maxArmor;
-    //     
-    //     MaxStamina = maxStamina;
-    //     Stamina = maxStamina;
-    // }
-
     //IsAliveCheck
     public bool IsAlive() =>  Health > 0;
 
@@ -87,13 +76,13 @@ public abstract class Hero
 
 public class Paladin : Hero
 {
-    public  Paladin(string name) : base(name, 100, 50, 50)
+    public  Paladin(string name) : base(name, 100, 50, 50, HeroType.Paladin)
     {}
 }
 
 public class Assasin : Hero
 {
-    public Assasin(string name) : base(name, 100, 50, 50)
+    public Assasin(string name) : base(name, 100, 50, 50, HeroType.Assasin)
     {}
 }
 
@@ -104,18 +93,19 @@ public class Mage : Hero, IHeal
         if (Health + heal > MaxHealth) MaxHealth = Health;
         else Health += heal;
     }
-    public Mage(string name) : base(name, 100, 50, 50)
+    public Mage(string name) : base(name, 100, 50, 50, HeroType.Mage)
     {}
 }
 
 public class Vampire : Hero, IHeal
 {
+    
     public void GetHeal(int heal)
     {
         if (Health + heal > MaxHealth) MaxHealth = Health;
         else Health += heal;
     }
-    public Vampire(string name) : base(name, 100, 50, 50)
+    public Vampire(string name) : base(name, 100, 50, 50,HeroType.Mage)
     {}
 }
 

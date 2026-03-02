@@ -2,33 +2,40 @@
 
 public static class InputHandler
 {
-    public static string  TextInput(int maxLength)
-    {   string input = string.Empty;
+    public static string  TextInput(int maxLength, string text)
+    {   string? input;
         while (true)
         {
-            Console.ReadLine();
             Console.WriteLine("Max length: " + maxLength);
-            Console.Write("Enter Hero name: ");
+            Console.Write($"{text}: ");
             input = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(input))
             {Console.WriteLine("Invalid input"); continue;}
-            string ClearInput = input.Trim(); 
-            if (ClearInput.Length > maxLength) Console.WriteLine("Too many characters");
+            string clearInput = input.Trim(); 
+            if (clearInput.Length > maxLength) Console.WriteLine("Too many characters");
             else return input;
         }
     }
 
-    public int DigitalInput()
+    public static int DigitalInput(int min, int max, string input = "Input number")
     {
-        //Доробити ввід цифр 
-    }
-    public static void ShowHerosTypes()
-    {
-        int i = 0;
-        foreach (var heroType in Enum.GetValues(typeof(HeroType)).Cast<HeroType>())
+        while (true)
         {
-            i++;
-            Console.WriteLine(i + ". "+ heroType);
+            Console.WriteLine("Input number in range: " + min + "-" + max);
+            Console.Write(input+": ");
+            bool tryParse = Int32.TryParse(Console.ReadLine(), out int number);
+            if (tryParse)
+            {
+                if (number < min || number > max)
+                {
+                    Console.WriteLine("Out of range");
+                    continue;
+                }
+                return number;
             }
+                Console.WriteLine("Invalid input");
+        }
     }
+
+    public static bool ConfirmEnter() => Console.ReadKey().Key == ConsoleKey.Enter;
 }
