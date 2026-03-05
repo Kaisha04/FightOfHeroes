@@ -13,7 +13,7 @@ public static class InputHandler
             {Console.WriteLine("Invalid input"); continue;}
             string clearInput = input.Trim(); 
             if (clearInput.Length > maxLength) Console.WriteLine("Too many characters");
-            else return input;
+            else return clearInput;
         }
     }
 

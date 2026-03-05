@@ -49,7 +49,7 @@ public abstract class Hero
     }
     public void ApplyStamina(int lostStamina)
     {
-        if (lostStamina + Stamina > MaxStamina) MaxStamina = Stamina;
+        if (lostStamina + Stamina > MaxStamina) Stamina = MaxStamina;
         else Stamina += lostStamina;
     }
     
@@ -93,7 +93,7 @@ public class Mage : Hero, IHeal
 {
     public void GetHeal(int heal)
     {
-        if (Health + heal > MaxHealth) MaxHealth = Health;
+        if (Health + heal > MaxHealth) Health = MaxHealth;
         else Health += heal;
     }
     public Mage(string name) : base(name, 100, 50, 50, HeroType.Mage)
@@ -105,10 +105,10 @@ public class Vampire : Hero, IHeal
     
     public void GetHeal(int heal)
     {
-        if (Health + heal > MaxHealth) MaxHealth = Health;
+        if (Health + heal > MaxHealth) Health= MaxHealth;
         else Health += heal;
     }
-    public Vampire(string name) : base(name, 100, 50, 50,HeroType.Mage)
+    public Vampire(string name) : base(name, 100, 50, 50,HeroType.Vampire)
     {}
 }
 public enum HeroType : byte
