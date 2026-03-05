@@ -1,47 +1,60 @@
 ﻿namespace FightOfHeroes;
-///Треба доробити логіку битви з ботом. Зробити баланс. Погано логіка стаміни.
 public class GameLoop
 {
+    private bool IsFirstPlayerBot { get; set; }
+    private bool IsSecondPlayerBot { get; set; }
     private FightMechanics FirstPlayer{get; set;}
     private FightMechanics SecondPlayer{get; set;}
-    public GameLoop(FightMechanics firstPlayer, FightMechanics secondPlayer)
+    public GameLoop(FightMechanics firstPlayer, FightMechanics secondPlayer, bool isFirstPlayerBot, bool isSecondPlayerBot)
     {
         FirstPlayer = firstPlayer;
         SecondPlayer = secondPlayer;
+        IsFirstPlayerBot = isFirstPlayerBot;
+        IsSecondPlayerBot = isSecondPlayerBot;
     }
 
     public void Run()
     {
+         
         Console.WriteLine("=== FIGHT STARTED ===");
     
         while (FirstPlayer.Hero.IsAlive() && SecondPlayer.Hero.IsAlive())
         {
+            PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
             Console.WriteLine("\n--------------------------------");
-            MoveOfPlayer(FirstPlayer, SecondPlayer);
+            MoveOfPlayer(FirstPlayer, SecondPlayer,IsFirstPlayerBot);
             if (!SecondPlayer.Hero.IsAlive())
             {
-                Console.WriteLine($"{FirstPlayer.Hero.Name} WIN!");
+                Console.WriteLine($"{FirstPlayer.Hero.Name} ------------WIN!------------");
+                PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
                 continue;
             }
-
             Console.WriteLine("--------------------------------");
-            MoveOfPlayer(SecondPlayer, FirstPlayer);
+            MoveOfPlayer(SecondPlayer, FirstPlayer, IsSecondPlayerBot);
             if (!FirstPlayer.Hero.IsAlive())
             {
-                Console.WriteLine($" {SecondPlayer.Hero.Name} WIN!");
+                Console.WriteLine($" {SecondPlayer.Hero.Name} ------------WIN!------------");
+                PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
             }
         }
+        
     
         Console.WriteLine("=== FIGHT FINISHED ===");
     }
 
-    public static void MoveOfPlayer(FightMechanics fighter, FightMechanics defender)
+    public static void MoveOfPlayer(FightMechanics fighter, FightMechanics defender, bool isBot)
     {
+        
         bool heal = fighter.Hero is IHeal;
         Console.WriteLine($"{fighter.Hero.Name} is moving");
-        Console.WriteLine("1 - Attack\n2 - Increase stamina");
-        if (heal) Console.WriteLine("3 - Heal");
-        int step = InputHandler.DigitalInput(1, heal ? 3 : 2,"Choose an option");
+        int step;
+        if (isBot) step = PlayerManager.BotMove(fighter.Hero);
+        else
+        {
+            Console.WriteLine("1 - Attack\n2 - Increase stamina");
+            if (heal) Console.WriteLine("3 - Heal");
+             step = InputHandler.DigitalInput(1, heal ? 3 : 2,"Choose an option");   
+        }
 
         switch (step)
         {

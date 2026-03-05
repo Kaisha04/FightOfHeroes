@@ -12,14 +12,17 @@ public class FightMechanics
     
     public int Attack()
     {
+        int damage;
         bool minStamina = Hero.Stamina / 2 < 10;
         if (minStamina)
-        {
-            int damage = _random.Next(1, Math.Max(2, Hero.Stamina));
+        { damage = _random.Next(1, Math.Max(2, Hero.Stamina));
             
             return damage;   
         }
-         return _random.Next(Hero.Stamina / 2, Hero.Stamina);
+
+        damage = _random.Next(Hero.Stamina / 2, Hero.Stamina);
+        Hero.LostStamina(damage);
+         return damage;
     }
 
     public int Defence(int damage)
@@ -29,11 +32,7 @@ public class FightMechanics
             int blockPercent = _random.Next(10, 51) * Hero.Armor / 100;
             Hero.LostArmor(blockPercent);
             int finalDamage = damage - blockPercent;
-            if (finalDamage <= 0)
-            {
-                Hero.ApplyDamage(0);
-                return finalDamage;    
-            }
+            if (finalDamage <= 0) finalDamage = 0;
             Hero.ApplyDamage(finalDamage);
             return finalDamage;
         }
@@ -56,7 +55,7 @@ public class FightMechanics
     
     public int Heal()
     {
-        if (Hero is IHeal)
+        if (Hero.HeroHeal(Hero))
         {
             int heal;
             bool minStamina = Hero.Stamina / 2 < 10;

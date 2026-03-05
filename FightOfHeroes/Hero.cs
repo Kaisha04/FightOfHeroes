@@ -2,15 +2,17 @@
 
 public abstract class Hero
 {
+    public static bool HeroHeal(Hero hero) => hero is IHeal;
     
     //Name of player
     public string? Name {get; private set;}
     
     //Player health
-    private protected int MaxHealth {get; set;}
+    public int MaxHealth {get; private protected set;}
     public int Health {get; private protected set;}
     
     //Player armor
+    public int MaxArmor {get; private protected set;}
     public int Armor {get; set;}
 
     //Player stamina
@@ -27,12 +29,13 @@ public abstract class Hero
         Name = name;
         
         MaxHealth = maxHealth;
-        Health = maxHealth;
+        Health = MaxHealth;
         
-        Armor = armor;
+        MaxArmor = armor;
+        Armor = MaxArmor;
         
         MaxStamina = maxStamina;
-        Stamina = maxStamina;
+        Stamina = MaxStamina;
         
         HeroType = heroType;
     }
@@ -108,7 +111,6 @@ public class Vampire : Hero, IHeal
     public Vampire(string name) : base(name, 100, 50, 50,HeroType.Mage)
     {}
 }
-
 public enum HeroType : byte
 {
     Paladin = 1,

@@ -33,6 +33,23 @@ public static class PlayerManager
             _ => throw new ArgumentOutOfRangeException(nameof(heroType), heroType, null)
         };
     }
+
+    public static int BotMove(Hero first)
+    {
+        double healthPerc = first is IHeal ? (double)first.Health / first.MaxHealth * 100 : 100;
+        double staminaPerc = (double)first.Stamina / first.MaxStamina * 100;
+        int panicPerc = 50;
+        if (healthPerc < panicPerc && healthPerc <= staminaPerc)
+        {
+            return 3; 
+        }
+        if (staminaPerc < panicPerc)
+        {
+            return 2; 
+        }
+        return 1;
+    }
+    
     public static void ShowHerosTypes()
     {
         int i = 0;
