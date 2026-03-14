@@ -11,6 +11,7 @@ public static class PlayerManager
         Console.WriteLine("Choose class of hero");
         ShowHerosTypes();
         HeroType heroType = (HeroType)InputHandler.DigitalInput(1,_countOfHeroes, "Choose class of player");
+        Console.Clear();
         return heroType switch
         {
             HeroType.Paladin => new Paladin(name),
@@ -23,7 +24,7 @@ public static class PlayerManager
     public static Hero CreateBot()
     {
         string name = RandomNames();
-        HeroType heroType = (HeroType)Random.Shared.Next(1,_countOfHeroes - 1);
+        HeroType heroType = (HeroType)Random.Shared.Next(1,_countOfHeroes + 1);
         return heroType  switch
         {
             HeroType.Paladin => new Paladin(name),
@@ -34,20 +35,20 @@ public static class PlayerManager
         };
     }
 
-    public static int BotMove(Hero first)
+    public static GameLoop.Actions BotMove(Hero first)
     {
         double healthPerc = first is IHeal ? (double)first.Health / first.MaxHealth * 100 : 100;
         double staminaPerc = (double)first.Stamina / first.MaxStamina * 100;
         int panicPerc = 50;
         if (healthPerc < panicPerc && healthPerc <= staminaPerc)
         {
-            return 3; 
+            return GameLoop.Actions.Heal; 
         }
         if (staminaPerc < panicPerc)
         {
-            return 2; 
+            return GameLoop.Actions.RestoreStamina; 
         }
-        return 1;
+        return GameLoop.Actions.Attack;
     }
     
     public static void ShowHerosTypes()

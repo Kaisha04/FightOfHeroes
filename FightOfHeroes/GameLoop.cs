@@ -15,9 +15,7 @@ public class GameLoop
 
     public void Run()
     {
-         
         Console.WriteLine("=== FIGHT STARTED ===");
-    
         while (FirstPlayer.Hero.IsAlive() && SecondPlayer.Hero.IsAlive())
         {
             PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
@@ -27,6 +25,7 @@ public class GameLoop
             {
                 Console.WriteLine($"{FirstPlayer.Hero.Name} ------------WIN!------------");
                 PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
+                InputHandler.ConfirmEnter();
                 continue;
             }
             Console.WriteLine("--------------------------------");
@@ -35,7 +34,10 @@ public class GameLoop
             {
                 Console.WriteLine($" {SecondPlayer.Hero.Name} ------------WIN!------------");
                 PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
+                InputHandler.ConfirmEnter();
             }
+            InputHandler.ConfirmEnter();
+            Console.Clear();
         }
         
     
@@ -45,20 +47,24 @@ public class GameLoop
     public static void MoveOfPlayer(FightMechanics fighter, FightMechanics defender, bool isBot)
     {
         
-        bool heal = fighter.Hero is IHeal;
         Console.WriteLine($"{fighter.Hero.Name} is moving");
-        int step;
-        if (isBot) step = PlayerManager.BotMove(fighter.Hero);
+        Actions step;
+        if (isBot) 
+             step = PlayerManager.BotMove(fighter.Hero);
         else
         {
-            Console.WriteLine("1 - Attack\n2 - Increase stamina");
-            if (heal) Console.WriteLine("3 - Heal");
-             step = InputHandler.DigitalInput(1, heal ? 3 : 2,"Choose an option");   
+            List<Actions> choices = PermitAction(fighter);
+            for (int i = 0; i < choices.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} - {GetDisplayName(choices[i])}");
+            }
+            step = ChooseAction(choices);
         }
 
+        Console.WriteLine();
         switch (step)
         {
-            case 1:
+            case Actions.Attack:
             {
                 int damage = fighter.Attack();
                 Console.WriteLine($"{fighter.Hero.Name} attacks for {damage} dmg!");
@@ -67,16 +73,53 @@ public class GameLoop
                 Console.WriteLine($"{defender.Hero.Name} blocked {damage - defence} dmg and took {defence} dmg.");
                 break;
             }
-            case 2:
+            case Actions.RestoreStamina:
             {
                 Console.WriteLine($"{fighter.Hero.Name} restored {fighter.IncreaseStamina()} stamina.");
                 break;
             }
-            case 3:
+            case Actions.Heal:
             {
                 Console.WriteLine($"{fighter.Hero.Name} restored {fighter.Heal()} hp");
                 break;
             }
         }
+    }
+    
+    
+    private static List<Actions> PermitAction(FightMechanics hero)
+    {
+        List<Actions> choices = new List<Actions>();
+        choices.Add(Actions.Attack);
+        if (hero.Hero.Stamina < hero.Hero.MaxStamina)
+            choices.Add(Actions.RestoreStamina);
+
+        if (hero.Hero is IHeal && hero.Hero.Health < hero.Hero.MaxHealth)
+            choices.Add(Actions.Heal);
+        return choices;
+    }
+    
+    private static Actions ChooseAction(List<Actions> actions)
+    {
+        
+      int choice =  InputHandler.DigitalInput(1,actions.Count,"Choose an option");
+      return actions[choice - 1];
+    }
+    public enum Actions : Byte
+    {
+        Attack = 1,
+        RestoreStamina,
+        Heal
+    }
+
+    public static string GetDisplayName(Actions action)
+    {
+        return action switch
+        {
+            Actions.Attack => "Attack",
+            Actions.RestoreStamina => "Restore stamina",
+            Actions.Heal => "Heal",
+            _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+        };
     }
 }

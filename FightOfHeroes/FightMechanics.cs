@@ -55,7 +55,7 @@ public class FightMechanics
     
     public int Heal()
     {
-        if (Hero.HeroHeal(Hero))
+        if (Hero is IHeal)
         {
             int heal;
             bool minStamina = Hero.Stamina / 2 < 10;

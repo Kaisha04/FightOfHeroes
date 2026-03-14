@@ -7,15 +7,15 @@ public abstract class Hero
     //Name of player
     public string? Name {get; private set;}
     
-    //Player health
+    //Player health's
     public int MaxHealth {get; private protected set;}
     public int Health {get; private protected set;}
     
-    //Player armor
+    //Player armor's
     public int MaxArmor {get; private protected set;}
     public int Armor {get; set;}
 
-    //Player stamina
+    //Player stamina's
     public int MaxStamina {get; private set;}
     public int Stamina  {get; private protected set;}
     
@@ -66,7 +66,7 @@ public abstract class Hero
         else Armor -= pointsOfArmor;
     }
     
-    //Show stats of player
+    //Show player stats 
     public void ShowStats()
     {
         Console.WriteLine($"Name: {Name}");

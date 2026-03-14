@@ -16,14 +16,15 @@ public static class InputHandler
             else return clearInput;
         }
     }
-
-    public static int DigitalInput(int min, int max, string input = "Input number")
+    
+    public static int DigitalInput(int min, int max, string input = "Input number", bool showRange = false)
     {
         while (true)
         {
-            Console.WriteLine("Input number in range: " + min + "-" + max);
+            if (showRange)
+                Console.WriteLine("Input number in range: " + min + "-" + max);
             Console.Write(input+": ");
-            bool tryParse = Int32.TryParse(Console.ReadLine(), out int number);
+            bool tryParse = Int32.TryParse(Console.ReadKey().KeyChar.ToString(), out int number);
             if (tryParse)
             {
                 if (number < min || number > max)
@@ -37,5 +38,9 @@ public static class InputHandler
         }
     }
 
-    public static bool ConfirmEnter() => Console.ReadKey().Key == ConsoleKey.Enter;
+    public static void ConfirmEnter()
+    {
+        Console.WriteLine("For countinue, press any key...");
+        Console.ReadKey();
+    }
 }

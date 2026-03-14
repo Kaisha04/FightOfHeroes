@@ -15,9 +15,9 @@ public static class Menu
         Console.WriteLine("3 - Only bots mode");
         switch (InputHandler.DigitalInput(1,3,"Choose mode"))
         {
-             case 1: OnePlayerMode(); break;
-             case 2: TwoPlayerMode(); break;
-             case 3: OnlyBotMode(); break;
+             case 1: Console.Clear(); OnePlayerMode(); break;
+             case 2: Console.Clear(); TwoPlayerMode(); break;
+             case 3: Console.Clear(); OnlyBotMode(); break;
              default: throw new Exception("Invalid option");
         }
     }
