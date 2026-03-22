@@ -1,6 +1,7 @@
 ﻿namespace FightOfHeroes;
 public class GameLoop
 {
+    
     private bool IsFirstPlayerBot { get; set; }
     private bool IsSecondPlayerBot { get; set; }
     private FightMechanics FirstPlayer{get; set;}
@@ -23,7 +24,8 @@ public class GameLoop
             MoveOfPlayer(FirstPlayer, SecondPlayer,IsFirstPlayerBot);
             if (!SecondPlayer.Hero.IsAlive())
             {
-                Console.WriteLine($"{FirstPlayer.Hero.Name} ------------WIN!------------");
+                Console.WriteLine("------------WIN!------------");
+                Console.WriteLine($"------------{FirstPlayer.Hero.Name}------------");
                 PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
                 InputHandler.ConfirmEnter();
                 continue;
@@ -32,7 +34,8 @@ public class GameLoop
             MoveOfPlayer(SecondPlayer, FirstPlayer, IsSecondPlayerBot);
             if (!FirstPlayer.Hero.IsAlive())
             {
-                Console.WriteLine($" {SecondPlayer.Hero.Name} ------------WIN!------------");
+                Console.WriteLine("------------WIN!------------");
+                Console.WriteLine($"------------{SecondPlayer.Hero.Name}------------");
                 PlayerManager.ShowPlayers(FirstPlayer.Hero, SecondPlayer.Hero);
                 InputHandler.ConfirmEnter();
             }

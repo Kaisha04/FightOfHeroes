@@ -22,20 +22,11 @@ public static class Menu
         }
     }
 
-    public static void OnePlayerMode()
-    {
-        Start(false,true);
-    }
+    public static void OnePlayerMode() => Start(false,true);
 
-    public static void TwoPlayerMode()
-    {
-        Start(false,false);
-    }
+    public static void TwoPlayerMode() => Start(false, false);
 
-    public static void OnlyBotMode()
-    {
-        Start(true,true);
-    }
+    public static void OnlyBotMode() => Start(true,true);
 
     private static void Start(bool firstPlayerBot, bool secondPlayerBot)
     {
